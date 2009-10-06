@@ -1,2 +1,4 @@
 .vim/swap/*
 .vim/view/*
+.emacs.d/auto-save-list/*
+.emacs.d/backups/*

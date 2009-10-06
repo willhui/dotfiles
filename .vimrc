@@ -33,7 +33,7 @@
 " for details.
 "
 " Use ":bd" to close a buffer, ":bd!" to close and discard changes.
-" "^6" to swap between two most recent buffers (use "^^" on Mac OS X).
+" "^6" to swap between two most recent buffers.
 "
 " Save your current session with ':mksession work.vim'
 " Open vim and restore the session with ':source work.vim'
@@ -88,8 +88,41 @@ set hid
 " recognize SCons files as Python
 autocmd BufReadPre SCons* set filetype=python
 
+" display tabs at the beginning of a line in python mode as bad
+autocmd BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+
 " enable all possible Python highlighting options
 let python_highlight_all=1
+
+" -----------------------------------------------------------
+" JFlex settings
+" -----------------------------------------------------------
+
+" set up syntax highlighting for jflex
+augroup filetype
+	au BufRead,BufNewFile *.flex,*.jflex set filetype=jflex
+augroup END
+au Syntax jflex so ~/.vim/syntax/jflex.vim
+
+" -----------------------------------------------------------
+" CUP settings
+" -----------------------------------------------------------
+
+" set up syntax highlighting for cup
+augroup filetype
+	au BufRead,BufNewFile *.yacc,*.cup set filetype=cup
+augroup END
+au Syntax cup so ~/.vim/syntax/cup.vim
+
+" -----------------------------------------------------------
+" GLSL settings
+" -----------------------------------------------------------
+
+" set up syntax highlighting for glsl
+augroup filetype
+	au BufRead,BufNewFile *.frag,*.vert,*.fp,*.vp,*.glsl set filetype=glsl
+augroup END
+au Syntax glsl so ~/.vim/syntax/glsl.vim
 
 " -----------------------------------------------------------
 " Perforce Jam settings
@@ -132,6 +165,9 @@ set hlsearch
 " find-as-you-type
 set incsearch
 
+" make sure :s///gc toggling is disabled
+set noedcompatible
+
 " -----------------------------------------------------------
 " Highlighting, Colors, Fonts
 " -----------------------------------------------------------
@@ -158,7 +194,8 @@ if has("gui_running")
 		"set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
 	endif
 
-	colorscheme inkpot
+	"colorscheme inkpot
+	colorscheme blackboard
 else
 	colorscheme blugrine
 endif
@@ -225,7 +262,7 @@ set complete=.,w,b,u,t,i
 set infercase
 
 " when completing tags in Insert mode show both the name
-" and any arguments (when a C funtion is inserted)
+" and any arguments (when a C function is inserted)
 set showfulltag
 
 function! InsertTabWrapper(direction)

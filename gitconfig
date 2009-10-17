@@ -1,0 +1,9 @@
+[user]
+	name = Will Hui
+	email = wth4@cornell.edu
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[gui]
+	fontdiff = -family Courier -size 12 -weight normal -slant roman -underline 0 -overstrike 0

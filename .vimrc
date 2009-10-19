@@ -10,12 +10,12 @@
 " in which it is loading them, start vim with the -V switch.
 " Handy for debugging a misbehaving vim configuration.
 "
-" Ctrl+S = Save file
-" Ctrl+O = Retrace your movements in the file (Ctrl+I is supposed
+" Ctrl+s = Save file
+" Ctrl+o = Retrace your movements in the file (Ctrl+i is supposed
 "          to be the new hotkey for this, but it doesn't work for me)
-" Ctrl+L = Toggle list of open buffers (BufExplorer)
-" Ctrl+J = Toggle list of cscope hits or compile errors (QuickFix window)
-" Ctrl+H = Show filesystem navigator
+" Ctrl+l = Toggle list of open buffers (BufExplorer)
+" Ctrl+j = Toggle list of cscope hits or compile errors (QuickFix window)
+" Ctrl+h = Show filesystem navigator
 " :A     = Switch between header and source files (in C/C++)
 "
 " If the cwd contains a vim/ subdir with [language].vim files in it,
@@ -518,9 +518,4 @@ imap {<cr> {<cr>}<esc>O
 
 " allow swapping between two most recent buffers even in insert mode
 imap <c-^> <esc>:e #<cr>
-
-" my failed attempt to make ^6 work on Mac
-if has("mac")
-	map <c-6> :e #<cr>
-endif
 

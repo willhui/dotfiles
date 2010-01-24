@@ -50,6 +50,14 @@
 ; Persist emacs desktop over multiple sessions
 (desktop-save-mode t)
 
+; Ugly hack to fix up the PATH on Mac OS X.
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "~/bin:/usr/local/bin:/opt/local/bin:" (getenv "PATH")))
+  (push "/opt/local/bin" exec-path)
+  (push "/usr/local/bin" exec-path)
+  (push "~/bin" exec-path))
+
+
 
 ; ---------------------------------------------------------------------------
 ; GUI
@@ -92,6 +100,13 @@
 ; Use bar cursor instead of block cursor.
 (require 'bar-cursor)
 (bar-cursor-mode 1)
+
+; Delete selected region on backspace, C-d, or DEL.
+(delete-selection-mode t)
+
+; C-k deletes the newline character as well. This allows you
+; to do C-a C-k C-y C-y to duplicate a line for editing.
+(setq kill-whole-line t)
 
 
 ; ---------------------------------------------------------------------------
@@ -146,8 +161,8 @@
 ; Set indent size.
 ;(setq standard-indent 2)
 
-; Use spaces instead of tabs.
-; (setq-default indent-tabs-mode nil)
+; Default to tab characters.
+(setq-default indent-tabs-mode t)
 
 (defun my-c-mode-hook ()
   ; Auto-indent.
@@ -168,7 +183,12 @@
 ; ---------------------------------------------------------------------------
 
 (defun my-python-mode-hook ()
-  (local-set-key (kbd "RET") 'newline-and-indent))
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  
+  ; 4-space indent is standard in Python
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq standard-indent 4))
 
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 

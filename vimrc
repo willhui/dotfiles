@@ -518,4 +518,3 @@ imap {<cr> {<cr>}<esc>O
 
 " allow swapping between two most recent buffers even in insert mode
 imap <c-^> <esc>:e #<cr>
-

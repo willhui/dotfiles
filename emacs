@@ -103,14 +103,34 @@
 
 ; C/C++/Java
 
+(require 'cc-mode)
+(global-font-lock-mode t)
+(global-set-key [(f9)] 'compile)
+
+;; personal preferences
+(c-set-offset 'substatement-open 0)
+(c-set-offset 'case-label '+)
+(c-set-offset 'arglist-cont-nonempty '+)
+(c-set-offset 'arglist-intro '+)
+(c-set-offset 'topmost-intro-cont '+)
+
+(defun my-build-tab-stop-list (width)
+  (let ((num-tab-stops (/ 80 width))
+	(counter 1)
+	(ls nil))
+    (while (<= counter num-tab-stops)
+      (setq ls (cons (* width counter) ls))
+      (setq counter (1+ counter)))
+    (set (make-local-variable 'tab-stop-list) (nreverse ls))))
+
 (defun my-c-mode-hook ()
   ; Auto-indent.
   (local-set-key (kbd "RET") 'newline-and-indent)
 
   ; Set tab size.
   (setq tab-width 4)
-  (setq c-basic-offset 4)
-  (setq standard-indent 4)
+  (setq c-basic-offset tab-width)
+  ;(setq standard-indent 4)
 
   ; Consume all consecutive whitespace on Backspace or C-d.
   (c-toggle-hungry-state t))

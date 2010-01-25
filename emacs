@@ -1,4 +1,17 @@
 ; Will's emacs configuration
+;
+; Notes:
+; I've remapped ESC-ESC-ESC to a single ESC, but it's probably better to
+; get used to C-g for backing out of a partially typed command.
+;
+; M-\ deletes horizontal space (useful for deleting all indentation up
+; to the beginning of a line). Remember this since it is just below the
+; backspace key.
+
+
+; ---------------------------------------------------------------------------
+; General
+; ---------------------------------------------------------------------------
 
 ; Add .emacs.d to the load-path.
 (add-to-list 'load-path "~/.emacs.d")
@@ -6,17 +19,103 @@
 ; Both Alt and Windows keys should act as Meta.
 (setq x-alt-keysym 'meta)
 (setq x-super-keysym 'meta)
+(setq mac-command-modifier 'meta)
+
+; ESC key as modifier is retarded; rebind ESC-ESC-ESC to single escape
+(global-set-key (kbd "<escape>")      'keyboard-escape-quit)
+
+; Merge emacs kill-ring with Mac OS X clipboard.
+(setq x-select-enable-clipboard t)
+
+; Consolidate backup files.
+(setq make-backup-files t)
+(setq version-control t)
+(setq backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
+(setq delete-old-versions t)
+
+; Make scripts executable on save
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+
+; Preserve owner and group of file on save.
+(setq backup-by-copying-when-mismatch t)
+
+; Case insensitive filename completion
+(setq read-file-name-completion-ignore-case t)
+(setq read-buffer-completion-ignore-case t)
+
+; Prevent annoying "Active processes exist" query on exit
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+	   (flet ((process-list ())) ad-do-it))
+
+; Persist emacs desktop over multiple sessions
+(desktop-save-mode t)
+
+; Ugly hack to fix up the PATH on Mac OS X.
+(when (equal system-type 'darwin)
+  (setenv "PATH" (concat "~/bin:/usr/local/bin:/opt/local/bin:" (getenv "PATH")))
+  (push "/opt/local/bin" exec-path)
+  (push "/usr/local/bin" exec-path)
+  (push "~/bin" exec-path))
+
+
+
+; ---------------------------------------------------------------------------
+; GUI
+; ---------------------------------------------------------------------------
+
+; Enable mouse wheel.
+(mouse-wheel-mode t)
+
+; Mouse wheel scroll speed.
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 3) ((control) . nil)))
+
+; Do not progressively increase scroll speed as wheel scrolls faster.
+(setq mouse-wheel-progressive-speed nil)
+
+; Line-by-line scrolling.
+(setq scroll-step 1)
 
 ; Show line numbers.
 (require 'linum)
-;(global-linum-mode)
-(global-set-key (kbd "<f6>") 'linum-mode)
+(global-linum-mode)
+;(global-set-key (kbd "<f6>") 'linum-mode)
+
+; Show line and column number in modeline.
+(line-number-mode 1)
+(column-number-mode 1)
 
 ; Set default font.
 (add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
 
+; Hide splash screen.
+(setq inhibit-splash-screen t)
+
+; Hide menu bar and toolbar.
+;(menu-bar-mode -1)
+(tool-bar-mode -1)
+
+; Disable alert bell.
+(setq ring-bell-function 'ignore)
+
+; Use bar cursor instead of block cursor.
+(require 'bar-cursor)
+(bar-cursor-mode 1)
+
+; Delete selected region on backspace, C-d, or DEL.
+(delete-selection-mode t)
+
+; C-k deletes the newline character as well. This allows you
+; to do C-a C-k C-y C-y to duplicate a line for editing.
+(setq kill-whole-line t)
+
+
+; ---------------------------------------------------------------------------
+; Colors
+; ---------------------------------------------------------------------------
+
 ; Set color theme.
 (require 'color-theme)
+(color-theme-initialize)
 
 ; Inkpot color theme
 (defun color-theme-inkpot ()
@@ -52,56 +151,18 @@
        (font-lock-warning-face ((t (:foreground "#ffffff" :background "#ff0000")))))))
 
 ;(color-theme-andreas)
-(color-theme-inkpot)
+(color-theme-charcoal-black)
+;(color-theme-inkpot)
 
-; Enable mouse wheel.
-(mouse-wheel-mode t)
-
-; Mouse wheel scroll speed.
-(setq mouse-wheel-scroll-amount '(3 ((shift) . 3) ((control) . nil)))
-
-; Do not progressively increase scroll speed as wheel scrolls faster.
-(setq mouse-wheel-progressive-speed nil)
-
-; Consolidate backup files.
-(setq make-backup-files t)
-(setq version-control t)
-(setq backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
-
-; Show line and column number in modeline.
-(line-number-mode 1)
-(column-number-mode 1)
-
-; Line-by-line scrolling.
-(setq scroll-step 1)
+; ---------------------------------------------------------------------------
+; C/C++/Java
+; ---------------------------------------------------------------------------
 
 ; Set indent size.
 ;(setq standard-indent 2)
 
-; Use spaces instead of tabs.
-; (setq-default indent-tabs-mode nil)
-
-; Hide splash screen.
-(setq inhibit-splash-screen t)
-
-; Hide menu bar and toolbar.
-;(menu-bar-mode -1)
-(tool-bar-mode -1)
-
-; Disable alert bell.
-(setq ring-bell-function 'ignore)
-
-; Make scripts executable on save
-(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
-
-; Preserve owner and group of file on save.
-(setq backup-by-copying-when-mismatch t)
-
-; Use bar cursor instead of block cursor.
-(require 'bar-cursor)
-(bar-cursor-mode 1)
-
-; C/C++/Java
+; Default to tab characters.
+(setq-default indent-tabs-mode t)
 
 (require 'cc-mode)
 (global-font-lock-mode t)
@@ -137,10 +198,17 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-hook)
 
+; ---------------------------------------------------------------------------
 ; Python
+; ---------------------------------------------------------------------------
 
 (defun my-python-mode-hook ()
-  (local-set-key (kbd "RET") 'newline-and-indent))
+  (local-set-key (kbd "RET") 'newline-and-indent)
+  
+  ; 4-space indent is standard in Python
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq standard-indent 4))
 
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
@@ -155,6 +223,45 @@
 ; Cscope
 (require 'xcscope)
 
-; Case insensitive filename completion
-(setq read-file-name-completion-ignore-case t)
-(setq read-buffer-completion-ignore-case t)
+; ---------------------------------------------------------------------------
+; Clojure
+; ---------------------------------------------------------------------------
+
+; clojure-mode
+(add-to-list 'load-path "~/src-packages/clojure-mode")
+(require 'clojure-mode)
+
+; auto-indent
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+; swank-clojure
+(add-to-list 'load-path "~/src-packages/swank-clojure/src/emacs")
+
+(setq swank-clojure-library-paths (list "~/src-packages/clojure-jars/native/"))
+(setq swank-clojure-jar-path "~/src-packages/clojure/clojure.jar"
+      swank-clojure-extra-classpaths
+	      (append (list "~/src-packages/swank-clojure/src/main/clojure" "~/projects/octoshark/src")
+		      (file-expand-wildcards "~/src-packages/clojure-jars/*.jar")))
+(require 'swank-clojure-autoload)
+
+; slime
+(add-to-list 'load-path "~/src-packages/slime/")
+(require 'slime)
+(setq slime-use-autodoc-mode nil)
+(slime-setup '(slime-fancy))
+
+(defun indent-or-expand (arg)
+  "Either indent according to mode, or expand the word preceding
+  point."
+  (interactive "*P")
+  (if (and
+	(or (bobp) (= ?w (char-syntax (char-before))))
+	(or (eobp) (not (= ?w (char-syntax (char-after))))))
+    (dabbrev-expand arg)
+    (indent-according-to-mode)))
+(global-set-key [C-tab] 'indent-according-to-mode)
+
+; Highlight matching parentheses
+(setq show-paren-delay 0
+            show-paren-style 'parenthesis)
+(show-paren-mode 1)

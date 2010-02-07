@@ -2,8 +2,8 @@
 # General
 # -----------------------------------------------------------
 
-# OS detection
-export OS=`uname`
+# operating system detection
+platform=`uname`
 
 zstyle :compinstall filename '~/.zshrc'
 
@@ -112,12 +112,37 @@ zstyle ':completion::*:git:*' list_aliases true
 # Environment variables
 # -----------------------------------------------------------
 
-export PATH=~/bin:$PATH
+# /usr/local contains administrator-installed software (not
+# managed automatically by the underlying system). ~/bin
+# contains user software (not installed at a system-wide level).
+# This creates a chain of overridable binaries: system tools,
+# admin-installed tools, and lastly user-installed tools.
+# We prepend ~/bin at the bottom of this file to ensure that
+# it is always at the beginning of $PATH.
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+# vim is nice for quick edits
 export EDITOR=vim
 export VISUAL=vim
+
+# less is more
 export PAGER=less
 
-if [[ $OS == "Linux" ]] then
+if [[ "$platform" == 'Darwin' ]]; then
+	# MacPorts software. Fall back on this stuff when equivalent
+	# software does not exist anywhere else in the system.
+	export MACPORTS_PREFIX=/opt/local
+	export PATH=$PATH:$MACPORTS_PREFIX/bin:$MACPORTS_PREFIX/sbin
+	export MANPATH=$MANPATH:$MACPORTS_PREFIX/share/man:/Developer/usr/share/man
+
+	# Ant 1.7.1
+	export ANT_HOME=~/apache-ant-1.7.1
+	export JAVA_HOME=$(/usr/libexec/java_home)
+
+	# Subversion 1.6.5
+	export PATH=/opt/subversion/bin:$PATH
+
+elif [[ "$platform" == 'Linux' ]]; then
 	export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 
 	# default cscope db
@@ -127,30 +152,39 @@ if [[ $OS == "Linux" ]] then
 	export BLADE="/home/will/projects/osdev/blade"
 fi
 
-if [[ $OS == "Darwin" ]] then
-	# MacPorts
-	export MACPORTS_PREFIX=/opt/local
-	export PATH=$MACPORTS_PREFIX/bin:$MACPORTS_PREFIX/sbin:$PATH
-	export MANPATH=$MACPORTS_PREFIX/share/man:/Developer/usr/share/man:$MANPATH
-fi
-
 # -----------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------
+
+# warn on mixed tab/space indentation
+alias python="python -t"
+
 # To use colorgcc, create a symlink for cc, gcc, g++ to
 # colorgcc somewhere in your PATH before the actual
 # aforementioned binaries.
-
-alias python="python -t"
-
-if [[ $OS == "Linux" ]] then
-	alias ls="ls --color"
-elif [[ $OS == "Darwin" ]] then
-	alias ls="ls -G"
+if [[ "$platform" == 'Linux' ]]; then
+	alias gcc="colorgcc --color"
 fi
 
+# color-coded ls output
+if [[ "$platform" == 'Darwin' ]]; then
+	alias ls="ls -G"
+else
+	alias ls="ls --color"
+fi
+
+# color-coded grep output
 alias grep="grep --color"
+
 alias set-cscope-db="source set-cscope-db"
 alias jam="jam -q"
-alias start-git-daemon="sudo -u git git-daemon --base-path=/home/git/repositories/ --export-all"
 
+# start MacVim from the command line
+if [[ "$platform" == 'Darwin' ]]; then
+	function gvim {
+		/Applications/MacVim/MacVim.app/Contents/MacOS/Vim -g $*;
+	}
+fi
+
+# ~/bin must always come first in $PATH
+export PATH=~/bin:$PATH

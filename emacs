@@ -228,40 +228,52 @@
 ; ---------------------------------------------------------------------------
 
 ; clojure-mode
-(add-to-list 'load-path "~/src-packages/clojure-mode")
-(require 'clojure-mode)
+;(add-to-list 'load-path "~/src-packages/clojure-mode")
+;(require 'clojure-mode)
+;
+;; auto-indent
+;(global-set-key (kbd "RET") 'newline-and-indent)
+;
+;; swank-clojure
+;(add-to-list 'load-path "~/src-packages/swank-clojure/src/emacs")
+;
+;(setq swank-clojure-library-paths (list "~/src-packages/clojure-jars/native/"))
+;(setq swank-clojure-jar-path "~/src-packages/clojure/clojure.jar"
+;      swank-clojure-extra-classpaths
+;	      (append (list "~/src-packages/swank-clojure/src/main/clojure" "~/projects/octoshark/src")
+;		      (file-expand-wildcards "~/src-packages/clojure-jars/*.jar")))
+;(require 'swank-clojure-autoload)
+;
+;; slime
+;(add-to-list 'load-path "~/src-packages/slime/")
+;(require 'slime)
+;(setq slime-use-autodoc-mode nil)
+;(slime-setup '(slime-fancy))
+;
+;(defun indent-or-expand (arg)
+;  "Either indent according to mode, or expand the word preceding
+;  point."
+;  (interactive "*P")
+;  (if (and
+;	(or (bobp) (= ?w (char-syntax (char-before))))
+;	(or (eobp) (not (= ?w (char-syntax (char-after))))))
+;    (dabbrev-expand arg)
+;    (indent-according-to-mode)))
+;(global-set-key [C-tab] 'indent-according-to-mode)
+;
+;; Highlight matching parentheses
+;(setq show-paren-delay 0
+;            show-paren-style 'parenthesis)
+;(show-paren-mode 1)
 
-; auto-indent
-(global-set-key (kbd "RET") 'newline-and-indent)
+; ErgoEmacs key bindings
+; ------------------------------------------------------------------
 
-; swank-clojure
-(add-to-list 'load-path "~/src-packages/swank-clojure/src/emacs")
+(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us") ; US layout
 
-(setq swank-clojure-library-paths (list "~/src-packages/clojure-jars/native/"))
-(setq swank-clojure-jar-path "~/src-packages/clojure/clojure.jar"
-      swank-clojure-extra-classpaths
-	      (append (list "~/src-packages/swank-clojure/src/main/clojure" "~/projects/octoshark/src")
-		      (file-expand-wildcards "~/src-packages/clojure-jars/*.jar")))
-(require 'swank-clojure-autoload)
+;; load ErgoEmacs keybinding
+(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
 
-; slime
-(add-to-list 'load-path "~/src-packages/slime/")
-(require 'slime)
-(setq slime-use-autodoc-mode nil)
-(slime-setup '(slime-fancy))
+;; turn on minor mode ergoemacs-mode
+(ergoemacs-mode 1)
 
-(defun indent-or-expand (arg)
-  "Either indent according to mode, or expand the word preceding
-  point."
-  (interactive "*P")
-  (if (and
-	(or (bobp) (= ?w (char-syntax (char-before))))
-	(or (eobp) (not (= ?w (char-syntax (char-after))))))
-    (dabbrev-expand arg)
-    (indent-according-to-mode)))
-(global-set-key [C-tab] 'indent-according-to-mode)
-
-; Highlight matching parentheses
-(setq show-paren-delay 0
-            show-paren-style 'parenthesis)
-(show-paren-mode 1)

@@ -1,0 +1,36 @@
+# Bells are annoying (none, audible, visible).
+set bell-style none
+
+# Convert ~ to home directory on completion.
+set expand-tilde on
+
+# Case-insensitive filename completion.
+set completion-ignore-case on
+
+# Enable 8-bit input.
+set convert-meta off
+set meta-flag on
+set input-meta on
+
+# Append a slash when completing directory names.
+set mark-directories on
+
+# Show all potential matches if completion is ambiguous.
+set show-all-if-ambiguous on
+
+# Indicate file types in list of possible completions.
+set visible-stats on
+
+# Key bindings.
+
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+"\e[5~": beginning-of-history
+"\e[6~": end-of-history
+"\e[3~": delete-char
+"\e[2~": quoted-insert
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
+

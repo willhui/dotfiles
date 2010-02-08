@@ -184,6 +184,9 @@ if [[ "$platform" == 'Darwin' ]]; then
 	function gvim {
 		/Applications/MacVim/MacVim.app/Contents/MacOS/Vim -g $*;
 	}
+	function emacs {
+		/Applications/Emacs.app/Contents/MacOS/Emacs $*;
+	}
 fi
 
 # ~/bin must always come first in $PATH

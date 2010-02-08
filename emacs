@@ -24,7 +24,7 @@
 ; ESC key as modifier is retarded; rebind ESC-ESC-ESC to single escape
 (global-set-key (kbd "<escape>")      'keyboard-escape-quit)
 
-; Merge emacs kill-ring with Mac OS X clipboard.
+; Merge emacs kill-ring with the system clipboard.
 (setq x-select-enable-clipboard t)
 
 ; Consolidate backup files.
@@ -50,14 +50,21 @@
 ; Persist emacs desktop over multiple sessions
 (desktop-save-mode t)
 
-; Ugly hack to fix up the PATH on Mac OS X.
+; Ugly hack to fix up the PATH on Mac OS X (we want Python 2.6 instead of 2.5).
 (when (equal system-type 'darwin)
-  (setenv "PATH" (concat "~/bin:/usr/local/bin:/opt/local/bin:" (getenv "PATH")))
-  (push "/opt/local/bin" exec-path)
+  (setenv "PATH" (concat "~/bin:/usr/local/bin:" (getenv "PATH")))
   (push "/usr/local/bin" exec-path)
   (push "~/bin" exec-path))
 
-
+;;; This was installed by package-install.el.
+;;; This provides support for the package system and
+;;; interfacing with ELPA, the package archive.
+;;; Move this code earlier if you want to reference
+;;; packages in your .emacs.
+(when
+    (load
+     (expand-file-name "~/.emacs.d/elpa/package.el"))
+  (package-initialize))
 
 ; ---------------------------------------------------------------------------
 ; GUI
@@ -77,15 +84,15 @@
 
 ; Show line numbers.
 (require 'linum)
-(global-linum-mode)
-;(global-set-key (kbd "<f6>") 'linum-mode)
+;(global-linum-mode)
+(global-set-key (kbd "<f6>") 'linum-mode)
 
 ; Show line and column number in modeline.
 (line-number-mode 1)
 (column-number-mode 1)
 
 ; Set default font.
-(add-to-list 'default-frame-alist '(font . "Inconsolata-14"))
+(add-to-list 'default-frame-alist '(font . "Inconsolata-12"))
 
 ; Hide splash screen.
 (setq inhibit-splash-screen t)
@@ -151,8 +158,8 @@
        (font-lock-warning-face ((t (:foreground "#ffffff" :background "#ff0000")))))))
 
 ;(color-theme-andreas)
-(color-theme-charcoal-black)
-;(color-theme-inkpot)
+;(color-theme-charcoal-black)
+(color-theme-inkpot)
 
 ; ---------------------------------------------------------------------------
 ; C/C++/Java
@@ -168,7 +175,7 @@
 (global-font-lock-mode t)
 (global-set-key [(f9)] 'compile)
 
-;; personal preferences
+; Personal preferences.
 (c-set-offset 'substatement-open 0)
 (c-set-offset 'case-label '+)
 (c-set-offset 'arglist-cont-nonempty '+)
@@ -224,56 +231,42 @@
 (require 'xcscope)
 
 ; ---------------------------------------------------------------------------
+; ErgoEmacs key bindings
+; ---------------------------------------------------------------------------
+
+; US keyboard layout.
+(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us")
+
+; Load ErgoEmacs key bindings.
+(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
+
+; Turn on minor mode ergoemacs-mode.
+(ergoemacs-mode 1)
+
+; ---------------------------------------------------------------------------
 ; Clojure
 ; ---------------------------------------------------------------------------
 
-; clojure-mode
-;(add-to-list 'load-path "~/src-packages/clojure-mode")
-;(require 'clojure-mode)
-;
-;; auto-indent
-;(global-set-key (kbd "RET") 'newline-and-indent)
-;
-;; swank-clojure
-;(add-to-list 'load-path "~/src-packages/swank-clojure/src/emacs")
-;
-;(setq swank-clojure-library-paths (list "~/src-packages/clojure-jars/native/"))
-;(setq swank-clojure-jar-path "~/src-packages/clojure/clojure.jar"
-;      swank-clojure-extra-classpaths
-;	      (append (list "~/src-packages/swank-clojure/src/main/clojure" "~/projects/octoshark/src")
-;		      (file-expand-wildcards "~/src-packages/clojure-jars/*.jar")))
-;(require 'swank-clojure-autoload)
-;
-;; slime
-;(add-to-list 'load-path "~/src-packages/slime/")
-;(require 'slime)
-;(setq slime-use-autodoc-mode nil)
-;(slime-setup '(slime-fancy))
-;
-;(defun indent-or-expand (arg)
-;  "Either indent according to mode, or expand the word preceding
-;  point."
-;  (interactive "*P")
-;  (if (and
-;	(or (bobp) (= ?w (char-syntax (char-before))))
-;	(or (eobp) (not (= ?w (char-syntax (char-after))))))
-;    (dabbrev-expand arg)
-;    (indent-according-to-mode)))
-;(global-set-key [C-tab] 'indent-according-to-mode)
-;
-;; Highlight matching parentheses
-;(setq show-paren-delay 0
-;            show-paren-style 'parenthesis)
-;(show-paren-mode 1)
+; Use M-x swank-clojure-project to set the classpath appropriately.
+; See http://github.com/technomancy/swank-clojure for more information.
 
-; ErgoEmacs key bindings
-; ------------------------------------------------------------------
+(setq swank-clojure-library-paths (list "~/projects/octoshark/lib/native/"))
 
-(setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us") ; US layout
+; auto-indent
+(global-set-key (kbd "RET") 'newline-and-indent)
 
-;; load ErgoEmacs keybinding
-(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
+(defun indent-or-expand (arg)
+  "Either indent according to mode, or expand the word preceding
+  point."
+  (interactive "*P")
+  (if (and
+	(or (bobp) (= ?w (char-syntax (char-before))))
+	(or (eobp) (not (= ?w (char-syntax (char-after))))))
+    (dabbrev-expand arg)
+    (indent-according-to-mode)))
+(global-set-key [C-tab] 'indent-according-to-mode)
 
-;; turn on minor mode ergoemacs-mode
-(ergoemacs-mode 1)
-
+; Highlight matching parentheses
+(setq show-paren-delay 0
+            show-paren-style 'parenthesis)
+(show-paren-mode 1)

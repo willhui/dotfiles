@@ -7,6 +7,19 @@
 ; M-\ deletes horizontal space (useful for deleting all indentation up
 ; to the beginning of a line). Remember this since it is just below the
 ; backspace key.
+;
+; TODO:
+; Predictive mode
+; http://www.emacswiki.org/emacs/PredictiveMode
+;
+; Org-mode
+; http://orgmode.org/
+;
+; AUCTeX
+; http://www.gnu.org/software/auctex/
+;
+; Emacs Code Browser (ECB)
+; http://ecb.sourceforge.net/
 
 
 ; ---------------------------------------------------------------------------
@@ -33,22 +46,19 @@
 (setq backup-directory-alist (quote ((".*" . "~/.emacs.d/backups/"))))
 (setq delete-old-versions t)
 
-; Make scripts executable on save
+; Make scripts executable on save.
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 
 ; Preserve owner and group of file on save.
 (setq backup-by-copying-when-mismatch t)
 
-; Case insensitive filename completion
+; Case insensitive filename completion.
 (setq read-file-name-completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 
-; Prevent annoying "Active processes exist" query on exit
+; Prevent annoying "Active processes exist?" query on exit.
 (defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
-	   (flet ((process-list ())) ad-do-it))
-
-; Persist emacs desktop over multiple sessions
-(desktop-save-mode t)
+  (flet ((process-list ())) ad-do-it))
 
 ; Ugly hack to fix up the PATH on Mac OS X (we want Python 2.6 instead of 2.5).
 (when (equal system-type 'darwin)
@@ -65,6 +75,7 @@
     (load
      (expand-file-name "~/.emacs.d/elpa/package.el"))
   (package-initialize))
+
 
 ; ---------------------------------------------------------------------------
 ; GUI
@@ -162,55 +173,72 @@
 (color-theme-inkpot)
 
 ; ---------------------------------------------------------------------------
-; C/C++/Java
+; Autocompletion
 ; ---------------------------------------------------------------------------
 
-; Set indent size.
-;(setq standard-indent 2)
+(require 'dabbrev)
+(setq dabbrev-always-check-other-buffers t)
+(setq dabbrev-abbrev-char-regexp "\\sw\\|\\s_")
+
+; ---------------------------------------------------------------------------
+; Indentation and whitespace
+; ---------------------------------------------------------------------------
+
+(defun indent-or-expand (arg)
+  "Either indent according to mode, or expand the word preceding
+  point."
+  (interactive "*P")
+  (if (and
+       (or (bobp) (= ?w (char-syntax (char-before))))
+       (or (eobp) (not (= ?w (char-syntax (char-after))))))
+      (dabbrev-expand arg)
+    (indent-according-to-mode)))
+
+(defun my-tab-fix ()
+  (local-set-key [tab] 'indent-or-expand))
+(defun my-ret-fix ()
+  (local-set-key (kbd "RET") 'newline-and-indent))
 
 ; Default to tab characters.
 (setq-default indent-tabs-mode t)
 
+
+; ---------------------------------------------------------------------------
+; C/C++/Java
+; ---------------------------------------------------------------------------
+
 (require 'cc-mode)
-(global-font-lock-mode t)
 (global-set-key [(f9)] 'compile)
 
-; Personal preferences.
-(c-set-offset 'substatement-open 0)
-(c-set-offset 'case-label '+)
-(c-set-offset 'arglist-cont-nonempty '+)
-(c-set-offset 'arglist-intro '+)
-(c-set-offset 'topmost-intro-cont '+)
-
-(defun my-build-tab-stop-list (width)
-  (let ((num-tab-stops (/ 80 width))
-	(counter 1)
-	(ls nil))
-    (while (<= counter num-tab-stops)
-      (setq ls (cons (* width counter) ls))
-      (setq counter (1+ counter)))
-    (set (make-local-variable 'tab-stop-list) (nreverse ls))))
-
 (defun my-c-mode-hook ()
-  ; Auto-indent.
-  (local-set-key (kbd "RET") 'newline-and-indent)
-
-  ; Set tab size.
+  (my-tab-fix)
+  (my-ret-fix)
+  
+  ; BSD indentation style
   (setq tab-width 4)
-  (setq c-basic-offset tab-width)
-  ;(setq standard-indent 4)
+  (c-set-style "bsd")
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'case-label '+)
+  (c-set-offset 'arglist-cont-nonempty '+)
+  (c-set-offset 'arglist-intro '+)
+  (c-set-offset 'topmost-intro-cont '+)
 
   ; Consume all consecutive whitespace on Backspace or C-d.
   (c-toggle-hungry-state t))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-hook)
 
+; Cross-referencing capabilities.
+(require 'xcscope)
+
+
 ; ---------------------------------------------------------------------------
 ; Python
 ; ---------------------------------------------------------------------------
 
 (defun my-python-mode-hook ()
-  (local-set-key (kbd "RET") 'newline-and-indent)
+  (my-tab-fix)
+  (my-ret-fix)
   
   ; 4-space indent is standard in Python
   (setq indent-tabs-mode nil)
@@ -227,8 +255,26 @@
 ;;(eval-after-load "pymacs"
 ;;  '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
 
-; Cscope
-(require 'xcscope)
+
+; ---------------------------------------------------------------------------
+; Clojure
+; ---------------------------------------------------------------------------
+
+; Use M-x swank-clojure-project to set the classpath appropriately.
+; See http://github.com/technomancy/swank-clojure for more information.
+
+(setq swank-clojure-library-paths (list "~/projects/octoshark/lib/native/"))
+
+; Highlight matching parentheses
+(setq show-paren-delay 0
+      show-paren-style 'parenthesis)
+(show-paren-mode 1)
+
+(defun my-clojure-mode-hook ()
+  (my-tab-fix)
+  (my-ret-fix))
+
+(add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
 
 ; ---------------------------------------------------------------------------
 ; ErgoEmacs key bindings
@@ -243,30 +289,16 @@
 ; Turn on minor mode ergoemacs-mode.
 (ergoemacs-mode 1)
 
+
 ; ---------------------------------------------------------------------------
-; Clojure
+; Session persistence
 ; ---------------------------------------------------------------------------
 
-; Use M-x swank-clojure-project to set the classpath appropriately.
-; See http://github.com/technomancy/swank-clojure for more information.
+; Reopen files in the last place they were when previously visited.
+(require 'saveplace)
+(setq-default save-place t)
 
-(setq swank-clojure-library-paths (list "~/projects/octoshark/lib/native/"))
+; Persist emacs desktop over multiple sessions. Perform this step as late
+; as possible.
+(desktop-save-mode t)
 
-; auto-indent
-(global-set-key (kbd "RET") 'newline-and-indent)
-
-(defun indent-or-expand (arg)
-  "Either indent according to mode, or expand the word preceding
-  point."
-  (interactive "*P")
-  (if (and
-	(or (bobp) (= ?w (char-syntax (char-before))))
-	(or (eobp) (not (= ?w (char-syntax (char-after))))))
-    (dabbrev-expand arg)
-    (indent-according-to-mode)))
-(global-set-key [C-tab] 'indent-according-to-mode)
-
-; Highlight matching parentheses
-(setq show-paren-delay 0
-            show-paren-style 'parenthesis)
-(show-paren-mode 1)

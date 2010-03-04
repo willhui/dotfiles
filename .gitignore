@@ -2,3 +2,5 @@ vim/swap/*
 vim/view/*
 emacs.d/auto-save-list/*
 emacs.d/backups/*
+emacs.d/elpa/*
+!emacs.d/elpa/package.el

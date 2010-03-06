@@ -7,3 +7,7 @@
 	branch = auto
 [gui]
 	fontdiff = -family Courier -size 12 -weight normal -slant roman -underline 0 -overstrike 0
+[core]
+	excludesfile = ~/.gitignore
+[push]
+	default = tracking

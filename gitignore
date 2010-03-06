@@ -1,0 +1,78 @@
+# Backup files
+*~
+
+# Merge residue
+*.orig
+
+# vi(m) swap files
+*.swp
+
+# Emacs lock files
+\#*#
+
+# Other revision control systems
+CVS/
+.svn/
+
+# Desktop Services Store
+.DS_Store
+
+# Find-By-Content
+.FBCIndex
+.FBCIndexCopy
+.FBCIndexTemp
+.FBCLockFolder
+
+# OS X localization
+.localized
+
+# Xcode build directory
+#build/
+
+# More Xcode cruft
+*.pbxuser
+*~.nib
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+
+# OS X binaries
+*.app
+*.dmg
+
+# Windows binaries
+*.dll
+*.exe
+
+# Library files
+*.lib
+*.a
+*.so
+
+# C/C++
+*.o
+#*.obj
+
+# Java
+*.class
+*.jar
+*.jnilib
+
+# Python
+*.pyc
+
+# Image files
+#*.bmp
+#*.gif
+#*.png
+#*.jpg
+#*.jpeg
+#*.tga
+
+# Archive files
+*.tgz
+*.tar.gz
+*.tar.bz2
+*.zip
+

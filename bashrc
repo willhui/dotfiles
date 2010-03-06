@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# TMP and TEMP are defined in the Windows environment. Leaving
+# them set to the default Windows temporary directory can have
+# unexpected consequences for Cygwin.
+if [[ "$OSTYPE" == 'cygwin' ]]; then
+	unset TMP
+	unset TEMP
+fi
+
 # Custom shell prompt (indicates the current git branch).
 
 function parse_git_branch {

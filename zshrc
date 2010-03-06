@@ -152,6 +152,14 @@ elif [[ "$platform" == 'Linux' ]]; then
 	export BLADE="/home/will/projects/osdev/blade"
 fi
 
+# TMP and TEMP are defined in the Windows environment. Leaving
+# them set to the default Windows temporary directory can have
+# unexpected consequences for Cygwin.
+if [[ "$OSTYPE" == 'cygwin' ]]; then
+	unset TMP
+	unset TEMP
+fi
+
 # -----------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------

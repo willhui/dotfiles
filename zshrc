@@ -129,12 +129,6 @@ export VISUAL=vim
 export PAGER=less
 
 if [[ "$platform" == 'Darwin' ]]; then
-	# MacPorts software. Fall back on this stuff when equivalent
-	# software does not exist anywhere else in the system.
-	export MACPORTS_PREFIX=/opt/local
-	export PATH=$PATH:$MACPORTS_PREFIX/bin:$MACPORTS_PREFIX/sbin
-	export MANPATH=$MANPATH:$MACPORTS_PREFIX/share/man:/Developer/usr/share/man
-
 	# Ant 1.7.1
 	export ANT_HOME=~/apache-ant-1.7.1
 	export JAVA_HOME=$(/usr/libexec/java_home)

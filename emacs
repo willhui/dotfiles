@@ -269,6 +269,108 @@
 
 ; Turn on minor mode ergoemacs-mode.
 (ergoemacs-mode 1)
+; ---------------------------------------------------------------------------
+; Motion and kill DWIM
+; ---------------------------------------------------------------------------
+(require 'motion-and-kill-dwim)
+
+(defun vim-forward-word (&optional n)
+  "Emulate vim forward word movement: Skip to end of word or punctuation group, then skip over whitespace group.
+With argument, do this that many times"
+  (interactive "p")
+  (setq zmacs-region-stays t)
+  (makd-dotimes n '(progn
+		     (cond
+		       ((looking-at "[a-zA-Z0-9]") (skip-chars-forward "a-zA-Z0-9"))
+		       ((looking-at "[^a-zA-Z0-9 \t\n]") (skip-chars-forward "^a-zA-Z0-9 \t\n")))
+		     (when (looking-at "[ \t\n]") (skip-chars-forward " \t\n")))))
+
+
+(defun vim-backward-word (&optional n)
+  "Emulate vim backward word movement: Skip over whitespace group, then skip to beginning of word or punctuation group.
+With argument, do this that many times"
+  (interactive "p")
+  (setq zmacs-region-stays t)
+  (makd-dotimes n '(progn
+		     (when (looking-back "[ \t\n]") (skip-chars-backward " \t\n"))
+		     (cond
+		       ((looking-back "[a-zA-Z0-9]") (skip-chars-backward "a-zA-Z0-9"))
+		       ((looking-back "[^a-zA-Z0-9 \t\n]") (skip-chars-backward "^a-zA-Z0-9 \t\n"))))))
+
+(defun vim-forward-kill-word (&optional n)
+  "Smart kill forward.
+1. If region is active, kill it
+2. Else if at the beginning of a word, kill the word and trailing whitespace
+3. Else if in the middle of a word, kill the rest of the word
+4. Else if looking at whitespace, kill whitespace forward
+5. Else if looking at punctuation, kill punctuation forward
+6. Else kill next char
+With argument, do this that many times"
+  (interactive "p")
+  (if (makd-mark-active)
+      (kill-region (region-beginning) (region-end))
+    (makd-dotimes n '(kill-region (point)
+                                  (progn
+                                    (cond ((looking-at "\\<\\(\\sw\\|\\s_\\)")
+                                           (skip-syntax-forward "w_")
+                                           (skip-syntax-forward " "))
+                                          ((looking-at "\\(\\sw\\|\\s_\\)")
+                                           (skip-syntax-forward "w_"))
+                                          ((looking-at "\\s ")
+                                           (skip-syntax-forward " "))
+                                          ((looking-at "\\s.")
+                                           (skip-syntax-forward "."))
+                                          (t
+                                           (forward-char)))
+                                    (point))))))
+
+(defun vim-backward-kill-word (&optional n)
+  "Smart kill backward.
+1. If region is active, kill it
+2. Else if looking back at whitespace, kill backward whitespace and word
+3. Else if in the middle of a word, kill backward word
+4. Else if looking at punctuation, kill backward punctuation
+5. Else kill previous char
+With argument, do this that many times"
+  (interactive "p")
+  (if (makd-mark-active)
+      (kill-region (region-beginning) (region-end))
+    (makd-dotimes n '(kill-region (point)
+                                  (progn
+                                    (cond ((looking-back "\\s ")
+                                           (skip-syntax-backward " ")
+                                           (when (looking-back "\\(\\sw\\|\\s_\\)")
+                                             (skip-syntax-backward "w_")))
+                                          ((looking-back "\\(\\sw\\|\\s_\\)\\>")
+                                           (skip-syntax-backward "w_")
+                                           (unless (looking-back "^\\s +")
+                                             (skip-syntax-backward " ")))
+                                          ((looking-back "\\(\\sw\\|\\s_\\)")
+                                           (skip-syntax-backward "w_"))
+                                          ((looking-back "\\s.")
+                                           (skip-syntax-backward "."))
+                                          (t
+                                           (backward-char)))
+                                    (point))))))
+
+(global-set-key (kbd "M-f") 'vim-forward-word)
+(global-set-key (kbd "M-b") 'vim-backward-word)
+(global-set-key (kbd "M-d") 'vim-forward-kill-word)
+(global-set-key (kbd "M-<backspace>") 'vim-backward-kill-word)
+(global-set-key (kbd "C-<backspace>") 'vim-backward-kill-word)
+
+(global-set-key (kbd "M-u") 'backward-char)
+(global-set-key (kbd "M-o") 'forward-char)
+(global-set-key (kbd "M-j") 'vim-backward-word)
+(global-set-key (kbd "M-l") 'vim-forward-word)
+(global-set-key (kbd "M-i") 'previous-line)
+(global-set-key (kbd "M-k") 'next-line)
+
+
+(add-hook 'c-mode-hook
+ (lambda () (define-key c-mode-map (kbd "M-j") 'vim-backward-word)))
+(add-hook 'c++-mode-hook
+ (lambda () (define-key c++-mode-map (kbd "M-j") 'vim-backward-word)))
 
 
 ; ---------------------------------------------------------------------------

@@ -135,8 +135,9 @@
 (require 'color-theme)
 (color-theme-initialize)
 
-(color-theme-andreas)
+;(color-theme-andreas)
 ;(color-theme-charcoal-black)
+(color-theme-xp)
 
 ; ---------------------------------------------------------------------------
 ; Autocompletion

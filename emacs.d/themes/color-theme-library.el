@@ -9783,7 +9783,7 @@ Includes custom, erc, font-lock, jde, semantic, speedbar, widget."
      (font-lock-type-face ((t (:foreground "Royalblue"))))
      (font-lock-variable-name-face ((t (:bold t :foreground "maroon" :weight bold :height 0.9))))
      (font-lock-warning-face ((t (:bold t :foreground "Red" :weight bold))))
-     (fringe ((t (:background "dodgerblue"))))
+     (fringe ((t (:background "darkgray"))))
      (header-line ((t (:underline "red" :overline "red" :background "grey90" :foreground "grey20" :box nil))))
      (highlight ((t (:background "darkseagreen2"))))
      (isearch ((t (:background "magenta2" :foreground "lightskyblue1"))))

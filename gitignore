@@ -10,6 +10,9 @@
 # Emacs lock files
 \#*#
 
+# Elisp precompiled code
+*.elc
+
 # Other revision control systems
 CVS/
 .svn/
@@ -52,7 +55,7 @@ CVS/
 
 # C/C++
 *.o
-#*.obj
+*.obj
 
 # Java
 *.class
@@ -63,12 +66,12 @@ CVS/
 *.pyc
 
 # Image files
-#*.bmp
-#*.gif
-#*.png
-#*.jpg
-#*.jpeg
-#*.tga
+*.bmp
+*.gif
+*.png
+*.jpg
+*.jpeg
+*.tga
 
 # Archive files
 *.tgz

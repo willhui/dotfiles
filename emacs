@@ -1,12 +1,19 @@
 ; Will's emacs configuration
 ;
 ; Notes:
+; C-h b gets a list of all key bindings currently in effect.
+;
 ; I've remapped ESC-ESC-ESC to a single ESC, but it's probably better to
 ; get used to C-g for backing out of a partially typed command.
 ;
 ; M-\ deletes horizontal space (useful for deleting all indentation up
 ; to the beginning of a line). Remember this since it is just below the
 ; backspace key.
+;
+; C-M-\ corrects the indentation for a block of code.
+; C-space is supposed to be the command to select a region by keyboard.
+; C-c-> adds an indentation level to the block of text
+; C-c-< removes an indentation level from the block of text
 ;
 ; TODO:
 ; Predictive mode
@@ -20,6 +27,12 @@
 ;
 ; Emacs Code Browser (ECB)
 ; http://ecb.sourceforge.net/
+;
+; Collection of Emacs Development Environment Tools (CEDET)
+; http://cedet.sourceforge.net/
+;
+; UndoTree
+; http://www.emacswiki.org/emacs/UndoTree
 
 
 ; ---------------------------------------------------------------------------

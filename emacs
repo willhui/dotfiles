@@ -439,6 +439,8 @@ With argument, do this that many times"
 ; Session persistence
 ; ---------------------------------------------------------------------------
 
+(setq auto-save-default nil)
+
 ; Reopen files in the last place they were when previously visited.
 (require 'saveplace)
 (setq-default save-place t)

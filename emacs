@@ -394,6 +394,16 @@ With argument, do this that many times"
 (add-hook 'c++-mode-hook
  (lambda () (define-key c++-mode-map (kbd "M-j") 'vim-backward-word)))
 
+; ---------------------------------------------------------------------------
+; Breadcrumbs
+; ---------------------------------------------------------------------------
+
+(require 'breadcrumb)
+(global-set-key (kbd "S-SPC") 'bc-set)    ; set breadcrumb
+(global-set-key (kbd "C-<left>") 'bc-previous)
+(global-set-key (kbd "C-<right>") 'bc-next)
+(global-set-key (kbd "C-<up>") 'bc-list)
+
 
 ; ---------------------------------------------------------------------------
 ; Session persistence

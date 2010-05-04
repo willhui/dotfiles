@@ -184,18 +184,6 @@
 ; Indentation and whitespace
 ; ---------------------------------------------------------------------------
 
-(defun indent-or-expand (arg)
-  "Either indent according to mode, or expand the word preceding
-  point."
-  (interactive "*P")
-  (if (and
-       (or (bobp) (= ?w (char-syntax (char-before))))
-       (or (eobp) (not (= ?w (char-syntax (char-after))))))
-      (dabbrev-expand arg)
-    (indent-according-to-mode)))
-
-(defun my-tab-fix ()
-  (local-set-key [tab] 'indent-or-expand))
 (defun my-ret-fix ()
   (local-set-key (kbd "RET") 'newline-and-indent))
 
@@ -211,17 +199,10 @@
 (global-set-key [(f9)] 'compile)
 
 (defun my-c-mode-hook ()
-  (my-tab-fix)
   (my-ret-fix)
-  
-  ; BSD indentation style
+
   (setq tab-width 4)
-  (c-set-style "bsd")
-  (c-set-offset 'substatement-open 0)
-  (c-set-offset 'case-label '+)
-  (c-set-offset 'arglist-cont-nonempty '+)
-  (c-set-offset 'arglist-intro '+)
-  (c-set-offset 'topmost-intro-cont '+)
+  (c-set-style "stroustrup")
 
   ; Consume all consecutive whitespace on Backspace or C-d.
   (c-toggle-hungry-state t))
@@ -239,13 +220,10 @@
 (require 'pymacs)
 
 (defun my-python-mode-hook ()
-  (my-tab-fix)
   (my-ret-fix)
   
   ; 4-space indent is standard in Python
-  (setq indent-tabs-mode nil)
-  (setq tab-width 4)
-  (setq standard-indent 4))
+  (setq c-set-style "python"))
 
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
@@ -286,7 +264,6 @@
 (show-paren-mode 1)
 
 (defun my-clojure-mode-hook ()
-  (my-tab-fix)
   (my-ret-fix))
 
 ; Causes SLIME to be loaded on startup (slow).

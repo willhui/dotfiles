@@ -236,6 +236,8 @@
 ; Python
 ; ---------------------------------------------------------------------------
 
+(require 'pymacs)
+
 (defun my-python-mode-hook ()
   (my-tab-fix)
   (my-ret-fix)
@@ -254,6 +256,19 @@
 (autoload 'pymacs-load "pymacs" nil t)
 ;;(eval-after-load "pymacs"
 ;;  '(add-to-list 'pymacs-load-path YOUR-PYMACS-DIRECTORY"))
+
+; Load ropemacs on startup (slow).
+;(pymacs-load "ropemacs" "rope-")
+
+; Load ropemacs with 'C-x p l'
+(defun load-ropemacs ()
+  "Load pymacs and ropemacs"
+  (interactive)
+  (require 'pymacs)
+  (pymacs-load "ropemacs" "rope-")
+  ;; Automatically save project python buffers before refactorings
+  (setq ropemacs-confirm-saving 'nil))
+(global-set-key "\C-xpl" 'load-ropemacs)
 
 
 ; ---------------------------------------------------------------------------
@@ -393,6 +408,21 @@ With argument, do this that many times"
  (lambda () (define-key c-mode-map (kbd "M-j") 'vim-backward-word)))
 (add-hook 'c++-mode-hook
  (lambda () (define-key c++-mode-map (kbd "M-j") 'vim-backward-word)))
+
+; ---------------------------------------------------------------------------
+; Snippets (TextMate-style)
+; ---------------------------------------------------------------------------
+(add-to-list 'load-path "~/.emacs.d/packages")
+(require 'yasnippet-bundle)
+
+
+; ---------------------------------------------------------------------------
+; Interactive-Do
+; ---------------------------------------------------------------------------
+(require 'ido)
+(ido-mode t)
+(setq ido-enable-flex-matching t)
+
 
 ; ---------------------------------------------------------------------------
 ; Breadcrumbs

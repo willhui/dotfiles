@@ -289,7 +289,8 @@
   (my-tab-fix)
   (my-ret-fix))
 
-(add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
+; Causes SLIME to be loaded on startup (slow).
+;(add-hook 'clojure-mode-hook 'my-clojure-mode-hook)
 
 
 ; ---------------------------------------------------------------------------

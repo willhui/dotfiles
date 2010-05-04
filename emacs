@@ -285,10 +285,12 @@
 (setenv "ERGOEMACS_KEYBOARD_LAYOUT" "us")
 
 ; Load ErgoEmacs key bindings.
-(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
+;(load "~/.emacs.d/ergoemacs-keybindings-5.1/ergoemacs-mode")
 
 ; Turn on minor mode ergoemacs-mode.
-(ergoemacs-mode 1)
+;(ergoemacs-mode 1)
+
+
 ; ---------------------------------------------------------------------------
 ; Motion and kill DWIM
 ; ---------------------------------------------------------------------------

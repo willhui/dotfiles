@@ -414,6 +414,28 @@ With argument, do this that many times"
 
 
 ; ---------------------------------------------------------------------------
+; Natural text caret (emacs point) positioning on mouse click
+; ---------------------------------------------------------------------------
+(defun closer-goto-char (posn)
+  (let ((x (car (posn-object-x-y posn)))
+	(w (car (posn-object-width-height posn))))
+    (goto-char (+ (posn-point posn)
+		  (if (and (>= x (/ w 2)) (< x w)) 1 0)))))
+
+
+(defun mouse-set-point (event)
+  "Move point to the position clicked on with the mouse.
+This should be bound to a mouse click event type."
+  (interactive "e")
+  (mouse-minibuffer-check event)
+  ;; Use event-end in case called from mouse-drag-region.
+  ;; If EVENT is a click, event-end and event-start give same value.
+  (let ((posn (event-end event)))
+    (select-window (posn-window posn))
+    (if (numberp (posn-point posn))
+	(closer-goto-char posn))))
+
+; ---------------------------------------------------------------------------
 ; Session persistence
 ; ---------------------------------------------------------------------------
 

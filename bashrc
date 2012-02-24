@@ -126,3 +126,5 @@ myprompt
 # Ensure our custom inputrc settings are used.
 export INPUTRC=~/.inputrc
 
+export PATH=~/bin:$PATH
+

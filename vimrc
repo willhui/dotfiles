@@ -497,6 +497,11 @@ imap <c-j> :QFix<cr>
 map <c-right> :cnext<cr>
 map <c-left> :cprev<cr>
 
+" key binding for fuzzy finder
+map <c-k> :FufFile<cr>
+imap <c-k> :FufFile<cr>
+vmap <c-k> :FufFile<cr>
+
 " key binding for vtreeexplore plugin
 map <c-h> :VSTreeExplore<cr>
 imap <c-h> :VSTreeExplore<cr>

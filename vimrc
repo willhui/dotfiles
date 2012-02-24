@@ -194,8 +194,10 @@ if has("gui_running")
 		"set guifont=Bitstream\ Vera\ Sans\ Mono\ 10
 	endif
 
+	hi Pmenu guibg=brown
+	colorscheme autumnleaf
 	"colorscheme inkpot
-	colorscheme blackboard
+	"colorscheme blackboard
 else
 	colorscheme blugrine
 endif

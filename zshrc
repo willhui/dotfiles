@@ -128,6 +128,11 @@ export VISUAL=vim
 # less is more
 export PAGER=less
 
+# virtualenvwrapper (for python environments)
+export WORKON_HOME=$HOME/virtualenvs/
+export PROJECT_HOME=$HOME/dev
+source /usr/local/bin/virtualenvwrapper.sh
+
 if [[ "$platform" == 'Darwin' ]]; then
 	# Ant 1.7.1
 	export ANT_HOME=~/apache-ant-1.7.1

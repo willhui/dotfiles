@@ -106,6 +106,9 @@
 ; Line-by-line scrolling.
 (setq scroll-step 1)
 
+; Put scrollbar on the right side.
+(set-scroll-bar-mode 'right)
+
 ; Show line numbers.
 (require 'linum)
 ;(global-linum-mode)
@@ -447,5 +450,5 @@ This should be bound to a mouse click event type."
 
 ; Persist emacs desktop over multiple sessions. Perform this step as late
 ; as possible.
-(desktop-save-mode t)
+;(desktop-save-mode t)
 

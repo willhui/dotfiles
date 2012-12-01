@@ -4,6 +4,9 @@
 # Merge residue
 *.orig
 
+# vim netrw history
+.netrwhist
+
 # vi(m) swap files
 *.swp
 

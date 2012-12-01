@@ -27,7 +27,10 @@ setopt nobgnice
 autoload -U promptinit
 promptinit
 
-prompt adam2
+# Use the 'prompt -p' command to preview built-in prompts
+#prompt adam2
+PROMPT='%F{black}%B[%b%F{cyan}%n%F{black}%B@%b%F{red}%m%F{black}%B:%b%F{green}%d%F{black}%B] %D %T%b
+%B%F{white}$ '
 
 
 # -----------------------------------------------------------

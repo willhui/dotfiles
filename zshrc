@@ -29,7 +29,7 @@ promptinit
 
 # Use the 'prompt -p' command to preview built-in prompts
 #prompt adam2
-PROMPT='%F{black}%B[%b%F{cyan}%n%F{black}%B@%b%F{red}%m%F{black}%B:%b%F{green}%d%F{black}%B] %D %T%b
+PROMPT='%F{darkgrey}%B[%b%F{cyan}%n%F{darkgrey}%B@%b%F{red}%m%F{darkgrey}%B:%b%F{green}%d%F{darkgrey}%B] %D %T%b
 %B%F{white}$ '
 
 
@@ -162,6 +162,8 @@ if [[ "$OSTYPE" == 'cygwin' ]]; then
 	unset TEMP
 fi
 
+export GOROOT=/usr/local/go
+
 # -----------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------
@@ -188,16 +190,6 @@ alias grep="grep --color"
 
 alias set-cscope-db="source set-cscope-db"
 alias jam="jam -q"
-
-# start MacVim from the command line
-if [[ "$platform" == 'Darwin' ]]; then
-	function gvim {
-		/Applications/MacVim/MacVim.app/Contents/MacOS/Vim -g $*;
-	}
-	function emacs {
-		/Applications/Emacs.app/Contents/MacOS/Emacs $*;
-	}
-fi
 
 # ~/bin must always come first in $PATH
 export PATH=~/bin:$PATH

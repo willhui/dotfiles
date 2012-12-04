@@ -13,3 +13,5 @@
 	excludesfile = ~/.gitignore
 [push]
 	default = tracking
+[credential]
+	helper = cache

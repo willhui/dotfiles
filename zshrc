@@ -144,6 +144,9 @@ if [[ "$platform" == 'Darwin' ]]; then
 	# Subversion 1.6.5
 	export PATH=/opt/subversion/bin:$PATH
 
+	# Google Go
+	export GOROOT=/usr/local/go
+
 elif [[ "$platform" == 'Linux' ]]; then
 	export JAVA_HOME=/usr/lib/jvm/java-6-sun/
 
@@ -152,6 +155,9 @@ elif [[ "$platform" == 'Linux' ]]; then
 
 	# osdev
 	export BLADE="/home/will/projects/osdev/blade"
+
+	# Google Go
+	export GOROOT=/usr/lib/go
 fi
 
 # TMP and TEMP are defined in the Windows environment. Leaving
@@ -161,8 +167,6 @@ if [[ "$OSTYPE" == 'cygwin' ]]; then
 	unset TMP
 	unset TEMP
 fi
-
-export GOROOT=/usr/local/go
 
 # -----------------------------------------------------------
 # Aliases

@@ -327,6 +327,12 @@ map <c-right> :cnext<cr>
 map <c-left> :cprev<cr>
 
 map <Leader>d :NERDTree<Enter>
-map <Leader>f :CtrlP<Enter>
+"map <Leader>f :CtrlP<Enter>
 map <Leader>b :CtrlPBuffer<Enter>
-map <Leader>b :JavaImport<Enter>
+
+" Eclim.
+let g:EclimLocateFileScope='workspace'
+map <Leader>f :LocateFile<Enter>
+map <Leader>i :JavaImport<Enter>
+map <Leader>s :JavaSearchContext<Enter>
+map <F5> :ProjectRefresh<Enter>

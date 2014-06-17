@@ -1,3 +1,7 @@
+vim/plugin/eclim.vim
+vim/eclim/*
+vim/bundle/*
+vim/swap/*.swp
 vim/view/*
 emacs.d/auto-save-list/*
 emacs.d/backups/*

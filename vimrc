@@ -16,15 +16,19 @@ filetype off                      " Required by Vundle.
 set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'Lokaltog/powerline'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-fugitive'
-Plugin 'bitc/vim-bad-whitespace'
-Plugin 'steffanc/cscopemaps.vim'
+" Check vimawesome.com for the latest, greatest vim plugins.
+
+Plugin 'gmarik/Vundle.vim'         " Plugin manager
+Plugin 'scrooloose/nerdtree'       " Directory explorer UI
+Plugin 'tpope/vim-fugitive'        " Git wrapper
+Plugin 'scrooloose/syntastic'      " Syntax checking
+Plugin 'kien/ctrlp.vim'            " Fuzzy search through files & buffers
+Plugin 'bling/vim-airline'         " Custom status line
+Plugin 'altercation/vim-colors-solarized'  " Solarized color scheme
+Plugin 'Valloric/YouCompleteMe'    " Code completion
+Plugin 'easymotion/vim-easymotion' " Highly efficient motion commands
+Plugin 'bitc/vim-bad-whitespace'   " Trailing whitespace checker
+Plugin 'steffanc/cscopemaps.vim'   " Cross-referencing (C/C++, Java)
 
 call vundle#end()
 filetype plugin indent on         " Required by Vundle.
@@ -151,10 +155,11 @@ if has("gui_running")
 	"colorscheme autumnleaf
 	"colorscheme inkpot
 	"colorscheme blackboard
-	set background=dark
+	"set background=dark
 	colorscheme solarized
 else
-	colorscheme blugrine
+	"colorscheme blugrine
+	colorscheme solarized
 endif
 
 " See http://vim.wikia.com/wiki/Fix_syntax_highlighting for details

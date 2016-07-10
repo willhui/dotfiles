@@ -10,6 +10,9 @@ zstyle :compinstall filename '~/.zshrc'
 # Tell zsh about our local function directory.
 fpath=(~/.zsh $fpath)
 
+# ZSH plugin location
+ZSH_PLUGIN_DIR=~/dev/external/
+
 # Beeps are annoying.
 setopt no_beep
 
@@ -27,9 +30,8 @@ setopt nobgnice
 autoload -U promptinit
 promptinit
 
-# Use the 'prompt -p' command to preview built-in prompts
-#prompt adam2
-PROMPT='%F{darkgrey}%B[%b%F{cyan}%n%F{darkgrey}%B@%b%F{red}%m%F{darkgrey}%B:%b%F{green}%d%F{darkgrey}%B] %D %T%b
+source $ZSH_PLUGIN_DIR/zsh-git-prompt/zshrc.sh
+PROMPT='%F{darkgrey}%B[%b%F{cyan}%n%F{darkgrey}%B@%b%F{red}%m%F{darkgrey}%B:%b%F{green}%d%F{darkgrey}%B] $(git_super_status)
 %B%F{white}$ '
 
 
@@ -129,7 +131,9 @@ export PAGER=less
 # Virtualenvwrapper (for python environments).
 export WORKON_HOME=$HOME/virtualenvs/
 export PROJECT_HOME=$HOME/dev
-source /usr/local/bin/virtualenvwrapper.sh
+if [[ -e /usr/local/bin/virtualenvwrapper.sh ]]; then
+	source /usr/local/bin/virtualenvwrapper.sh
+fi
 
 if [[ "$platform" == 'Darwin' ]]; then
 	# Ant 1.7.1
@@ -167,6 +171,10 @@ fi
 # Aliases
 # -----------------------------------------------------------
 
+# Disk usage reporting with human-readable units.
+alias df="df -h"
+alias du="du -h"
+
 # Warn on mixed tab/space indentation.
 alias python="python -t"
 
@@ -202,3 +210,9 @@ alias eclimd=$ECLIPSE_HOME/eclimd
 
 # ~/bin must always come first in $PATH
 export PATH=~/bin:$PATH
+
+# ===================================================================
+# Enable shell syntax highlighting. This line *must* remain
+# at the end of the file.
+# ===================================================================
+source $ZSH_PLUGIN_DIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

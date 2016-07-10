@@ -131,8 +131,9 @@ export PAGER=less
 # Virtualenvwrapper (for python environments).
 export WORKON_HOME=$HOME/virtualenvs/
 export PROJECT_HOME=$HOME/dev
-if [[ -e /usr/local/bin/virtualenvwrapper.sh ]]; then
-	source /usr/local/bin/virtualenvwrapper.sh
+VEW_BIN=/usr/local/bin/virtualenvwrapper.sh
+if [[ -e $VEW_BIN ]]; then
+	source $VEW_BIN
 fi
 
 if [[ "$platform" == 'Darwin' ]]; then
@@ -170,6 +171,12 @@ fi
 # -----------------------------------------------------------
 # Aliases
 # -----------------------------------------------------------
+
+# Recursive grep.
+alias gr="grep -rnIi --color=auto"
+
+# Find file.
+alias ff="find . -iname"
 
 # Disk usage reporting with human-readable units.
 alias df="df -h"
@@ -210,6 +217,11 @@ alias eclimd=$ECLIPSE_HOME/eclimd
 
 # ~/bin must always come first in $PATH
 export PATH=~/bin:$PATH
+
+ITERM2_SHELL_INTEG=~/.iterm2_shell_integration.`basename $SHELL`
+if [[ -e $ITERM2_SHELL_INTEG ]]; then
+	source $ITERM2_SHELL_INTEG
+fi
 
 # ===================================================================
 # Enable shell syntax highlighting. This line *must* remain

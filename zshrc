@@ -223,6 +223,12 @@ if [[ -e $ITERM2_SHELL_INTEG ]]; then
 	source $ITERM2_SHELL_INTEG
 fi
 
+# Pick up any extra user customization, if available.
+USER_CONFIG=~/.zshrc.user
+if [[ -e $USER_CONFIG ]]; then
+	source $USER_CONFIG
+fi
+
 # ===================================================================
 # Enable shell syntax highlighting. This line *must* remain
 # at the end of the file.

@@ -344,3 +344,8 @@ map <Leader>f :LocateFile<Enter>
 map <Leader>i :JavaImport<Enter>
 map <Leader>s :JavaSearchContext<Enter>
 map <F5> :ProjectRefresh<Enter>
+
+" Pick up any extra user customization, if available.
+if filereadable('~/.vimrc.user')
+	source ~/.vimrc.user
+endif

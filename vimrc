@@ -25,6 +25,7 @@ Plugin 'scrooloose/syntastic'      " Syntax checking
 Plugin 'kien/ctrlp.vim'            " Fuzzy search through files & buffers
 Plugin 'bling/vim-airline'         " Custom status line
 Plugin 'altercation/vim-colors-solarized'  " Solarized color scheme
+Plugin 'morhetz/gruvbox'           " A terminal color scheme
 Plugin 'Valloric/YouCompleteMe'    " Code completion
 Plugin 'easymotion/vim-easymotion' " Highly efficient motion commands
 Plugin 'bitc/vim-bad-whitespace'   " Trailing whitespace checker
@@ -152,14 +153,12 @@ if has("gui_running")
 	endif
 
 	"hi Pmenu guibg=brown
-	"colorscheme autumnleaf
-	"colorscheme inkpot
-	"colorscheme blackboard
-	"set background=dark
 	colorscheme solarized
 else
-	"colorscheme blugrine
-	colorscheme solarized
+	set background=dark
+	let g:gruvbox_italic=1
+	let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+	colorscheme gruvbox
 endif
 
 " See http://vim.wikia.com/wiki/Fix_syntax_highlighting for details

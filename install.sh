@@ -25,6 +25,14 @@ ln -snf $CWD/bashrc ~/.bashrc
 ln -snf $CWD/zshrc ~/.zshrc
 ln -snf $CWD/inputrc ~/.inputrc
 
+ln -snf ~/.vim ~/.config/nvim
+ln -snf ~/.vimrc ~/.config/nvim/init.vim
+command -v pip >/dev/null 2>&1 || { \
+	echo >&2 "Missing 'pip', please install it. Then rerun this script."; \
+	exit 1; \
+}
+pip install --upgrade neovim
+
 mkdir -p $ZSH_PLUGIN_DIR
 mkdir -p ~/.vim/bundle
 mkdir -p ~/.vim/swap

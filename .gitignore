@@ -1,3 +1,4 @@
+vim/init.vim
 vim/plugin/eclim.vim
 vim/eclim/*
 vim/bundle/*

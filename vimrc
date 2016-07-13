@@ -60,6 +60,9 @@ if has("unix")
 	set shell=/bin/zsh
 endif
 
+" Reload externally-modified files without prompting.
+set autoread
+
 " Try to restore last known cursor position when re-opening a file.
 if has("autocmd")
 	autocmd BufReadPost * if line("'\"") | exe "normal '\"" | endif
@@ -336,6 +339,7 @@ map <Leader>b :CtrlPBuffer<Enter>
 
 " Eclim.
 let g:EclimLocateFileScope='workspace'
+let g:EclimLocateFileDefaultAction='edit'
 map <Leader>f :LocateFile<Enter>
 map <Leader>i :JavaImport<Enter>
 map <Leader>s :JavaSearchContext<Enter>
